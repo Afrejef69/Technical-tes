@@ -5,11 +5,11 @@ WORKDIR /app
 
 # Copiar package.json y package-lock.json y hacer npm install
 COPY package*.json ./
-RUN npm install
+RUN yarn install
 
 # Copiar el resto del código y construir
 COPY . .
-RUN npm run build
+RUN yarn build
 
 # ---- RUN STAGE ----
 FROM node:20
@@ -17,7 +17,7 @@ FROM node:20
 WORKDIR /app
 
 # Copiar package.json y solo instalar dependencias de producción
-COPY package*.json ./
+COPY package*.json yarn.lock ./
 RUN npm install --only=production
 
 # Copiar la carpeta dist del builder
