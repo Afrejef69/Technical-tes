@@ -1,16 +1,27 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-import class Users {
+class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
-  @Column()
-  nombre:string;
+  @Column({ type: 'varchar', length: 255 })
+  @ApiProperty({
+    description: 'Insert full name',
+    example: 'Jeffrey Reyes',
+  })
+  name!: string;
 
-  @Column()
-  email:string;
+  @Column({ type: 'varchar', length: 255 })
+  @ApiProperty({
+    description: 'Insert email',
+    example: 'example@gmail.com',
+  })
+  email!: string;
 
-  @Column()
-  edad: numbre;
+  @Column({ type: 'int' })
+  edad!: number;
 }
+
+export default User;
