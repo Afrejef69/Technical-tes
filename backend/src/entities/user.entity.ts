@@ -21,7 +21,7 @@ class User {
   email!: string;
 
   @Column({ type: 'int' })
-  edad!: number;
+  age!: number;
 }
 
 export default User;

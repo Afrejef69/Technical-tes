@@ -19,5 +19,5 @@ export default class CreateUserDto {
 
   @IsInt()
   @Min(18, { message: 'El usuario debe ser mayor de edad (+18)' })
-  edad!: number;
+  age!: number;
 }

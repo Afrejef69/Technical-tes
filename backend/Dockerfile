@@ -1,30 +1,27 @@
-# ---- BUILD STAGE ----
-FROM node:20 AS builder
+FROM node:20.11.0 AS builder
 
 WORKDIR /app
 
-# Copiar package.json y package-lock.json y hacer npm install
 COPY package*.json ./
-RUN yarn install
 
-# Copiar el resto del código y construir
+RUN npm install
+
 COPY . .
-RUN yarn build
 
-# ---- RUN STAGE ----
-FROM node:20
+RUN npm run build
+
+FROM node:20.11.0
 
 WORKDIR /app
 
-# Copiar package.json y solo instalar dependencias de producción
-COPY package*.json yarn.lock ./
-RUN npm install --only=production
-
-# Copiar la carpeta dist del builder
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 
-# Exponer el puerto de la app
+RUN npm install --only=production
+
+COPY wait-for-db.sh ./
+RUN chmod +x wait-for-db.sh
+
 EXPOSE 3001
 
-# Comando de ejecución
-CMD ["node", "dist/main.js"]
+CMD ["node", "./dist/src/main.js", "./wait-for-db.sh"] 
